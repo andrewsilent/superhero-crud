@@ -8,17 +8,6 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      heroId: {
-        field: 'hero_id',
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        references: {
-          model: 'heroes',
-          key: 'id',
-        },
-        onDelete: 'cascade',
-        onUpdate: 'restrict',
-      },
       superpower: {
         type: Sequelize.TEXT,
         allowNull: false,
