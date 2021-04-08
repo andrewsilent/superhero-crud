@@ -1,5 +1,6 @@
 const { Router } = require('express');
 const multer = require('multer');
+const SuperheroController = require('./controllers/superhero.controller');
 const router = Router();
 
 const storage = multer.diskStorage({
@@ -12,6 +13,13 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
-// router.post('/');
+router.post(
+  '/superheroes',
+  /*upload.array('image')*/ SuperheroController.createHero,
+);
+router.get('/superheroes');
+router.get('/superheroes/:id');
+router.patch('/superheroes/:id');
+router.delete('/superheroes/:id', SuperheroController.deleteHero);
 
-module.exports = router
+module.exports = router;
