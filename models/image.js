@@ -10,8 +10,9 @@ module.exports = (sequelize, DataTypes) => {
   }
   Image.init(
     {
-      image_path: {
+      imagePath: {
         type: DataTypes.TEXT,
+        field: 'image_path',
         allowNull: false,
         validate: {
           notNull: true,

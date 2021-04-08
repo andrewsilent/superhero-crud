@@ -23,7 +23,7 @@ module.exports = {
         allowNull: false,
       },
       catchPhrase: {
-        field: 'atch_phrase',
+        field: 'catch_phrase',
         type: Sequelize.STRING,
         allowNull: false,
       },

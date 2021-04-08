@@ -22,24 +22,27 @@ module.exports = (sequelize, DataTypes) => {
           notEmpty: true,
         },
       },
-      real_name: {
+      realName: {
         type: DataTypes.STRING,
+        field: 'real_name',
         allowNull: false,
         validate: {
           notNull: true,
           notEmpty: true,
         },
       },
-      origin_description: {
+      originDescription: {
         type: DataTypes.TEXT,
+        field: 'origin_description',
         allowNull: false,
         validate: {
           notNull: true,
           notEmpty: true,
         },
       },
-      catch_phrase: {
+      catchPhrase: {
         type: DataTypes.STRING,
+        field: 'catch_phrase',
         allowNull: false,
         validate: {
           notNull: true,
