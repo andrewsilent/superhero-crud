@@ -63,12 +63,14 @@ module.exports.getHero = async (req, res, next) => {
 module.exports.getAllHeroes = async (req, res, next) => {
   try {
     const {
-      query: { page = 1, size = 5 },
+      pagination: { limit, offset },
     } = req;
 
-    const { count: total, rows: heroes } = await Superhero.findAndCountAll({
-      limit: size,
-      offset: (page - 1) * size,
+    const count = await Superhero.count();
+
+    const heroes = await Superhero.findAll({
+      limit: limit,
+      offset: offset,
       include: [
         {
           model: Image,
@@ -87,10 +89,10 @@ module.exports.getAllHeroes = async (req, res, next) => {
     }
 
     res.status(200).send({
-      heroesCount: total,
-      pagesCount: `${Math.ceil(total / size)}`,
-      pageSize: size,
-      currentPage: page,
+      heroesCount: count,
+      pagesCount: Math.ceil(count / limit),
+      pageSize: Number(limit),
+      currentPage: Math.floor(offset / limit) + 1,
       data: heroes,
     });
   } catch (err) {
