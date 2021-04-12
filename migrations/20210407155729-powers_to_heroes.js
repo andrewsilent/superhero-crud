@@ -9,9 +9,9 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      heroId: {
+      superheroId: {
         allowNull: false,
-        field: 'hero_id',
+        field: 'superhero_id',
         type: Sequelize.INTEGER,
         references: {
           model: 'heroes',
@@ -20,9 +20,9 @@ module.exports = {
         onDelete: 'cascade',
         onUpdate: 'cascade',
       },
-      powerId: {
+      superpowerId: {
         allowNull: false,
-        field: 'power_id',
+        field: 'superpower_id',
         type: Sequelize.INTEGER,
         references: {
           model: 'hero_powers',

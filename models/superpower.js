@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate (models) {
       Superpower.belongsToMany(models.Superhero, {
         through: 'powers_to_heroes',
-        foreingKey: 'powerId',
+        foreingKey: 'superpowerId',
       });
     }
   }
@@ -13,6 +13,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       superpower: {
         type: DataTypes.TEXT,
+        unique: true,
         allowNull: false,
         validate: {
           notNull: true,

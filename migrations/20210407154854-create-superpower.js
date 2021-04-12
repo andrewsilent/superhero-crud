@@ -10,6 +10,7 @@ module.exports = {
       },
       superpower: {
         type: Sequelize.TEXT,
+        unique: true,
         allowNull: false,
       },
       createdAt: {

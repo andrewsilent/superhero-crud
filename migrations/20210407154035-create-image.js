@@ -8,16 +8,15 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      heroId: {
-        field: 'hero_id',
+      superheroId: {
+        field: 'superhero_id',
         type: Sequelize.INTEGER,
-        allowNull: false,
         references: {
           model: 'heroes',
           key: 'id',
         },
         onDelete: 'cascade',
-        onUpdate: 'restrict',
+        onUpdate: 'cascade',
       },
       imagePath: {
         field: 'image_path',

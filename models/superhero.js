@@ -4,11 +4,11 @@ module.exports = (sequelize, DataTypes) => {
   class Superhero extends Model {
     static associate (models) {
       Superhero.hasMany(models.Image, {
-        foreingKey: 'heroId',
+        foreingKey: 'superheroId',
       });
       Superhero.belongsToMany(models.Superpower, {
         through: 'powers_to_heroes',
-        foreingKey: 'heroId',
+        foreingKey: 'superheroId',
       });
     }
   }
@@ -16,6 +16,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       nickname: {
         type: DataTypes.STRING,
+        unique: true,
         allowNull: false,
         validate: {
           notNull: true,
@@ -25,6 +26,7 @@ module.exports = (sequelize, DataTypes) => {
       realName: {
         type: DataTypes.STRING,
         field: 'real_name',
+        unique: true,
         allowNull: false,
         validate: {
           notNull: true,

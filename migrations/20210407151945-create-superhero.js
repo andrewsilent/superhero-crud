@@ -10,10 +10,12 @@ module.exports = {
       },
       nickname: {
         type: Sequelize.STRING,
+        unique: true,
         allowNull: false,
       },
       realName: {
         field: 'real_name',
+        unique: true,
         type: Sequelize.STRING,
         allowNull: false,
       },

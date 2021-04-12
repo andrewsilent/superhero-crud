@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
   class Image extends Model {
     static associate (models) {
       Image.belongsTo(models.Superhero, {
-        foreingKey: 'heroId',
+        foreingKey: 'superheroId',
       });
     }
   }
