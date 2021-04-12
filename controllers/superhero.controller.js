@@ -1,44 +1,32 @@
-const { Superhero, Superpower } = require('../models');
+const { Superhero, Superpower, Image } = require('../models');
 const createError = require('http-errors');
 
 module.exports.createHero = async (req, res, next) => {
   try {
     const {
-      body: { superpowers, nickname, realName, originDescription, catchPhrase },
-      files,
+      body: { nickname, realName, originDescription, catchPhrase },
+      images,
+      superpowers,
     } = req;
 
     const hero = await Superhero.create({
-      nickname: nickname,
-      realName: realName,
-      originDescription: originDescription,
-      catchPhrase: catchPhrase,
+      nickname,
+      realName,
+      originDescription,
+      catchPhrase,
     });
 
     if (!hero) {
       return next(createError(400, 'Bad request. Hero was not created'));
     }
 
-    console.log('hero = ', hero);
-
-    if (superpowers.length) {
-      const superpowersArray = await Promise.all(
-        superpowers.map(
-          async superpower =>
-            await Superpower.create({
-              superpower: superpower,
-            }),
-        ),
-      );
-
-      const powersToHeroesArray = await Promise.all(
-        superpowersArray.map(async power => await hero.addSuperpower(power)),
-      );
+    if (images) {
+      await hero.addImages(images);
     }
 
-    // if (files.length) {
-    //   files.map(async file => await Superhero.addImage(file.filename));
-    // }
+    if (superpowers) {
+      await hero.addSuperpowers(superpowers);
+    }
 
     res.status(201).send({ data: hero });
   } catch (err) {
@@ -51,7 +39,16 @@ module.exports.getHero = async (req, res, next) => {
     const {
       params: { id },
     } = req;
-    const hero = await Hero.findByPk(id);
+    const hero = await Superhero.findByPk(id, {
+      include: [
+        { model: Image, attributes: ['imagePath'] },
+        {
+          model: Superpower,
+          attributes: ['superpower'],
+          through: { attributes: [] },
+        },
+      ],
+    });
 
     if (!hero) {
       return next(createError(404, 'User not found'));
@@ -69,13 +66,24 @@ module.exports.getAllHeroes = async (req, res, next) => {
       query: { page = 1, size = 5 },
     } = req;
 
-    const { count: total, rows: heroes } = await Hero.findAll({
+    const { count: total, rows: heroes } = await Superhero.findAndCountAll({
       limit: size,
       offset: (page - 1) * size,
+      include: [
+        {
+          model: Image,
+          attributes: ['imagePath'],
+        },
+        {
+          model: Superpower,
+          attributes: ['superpower'],
+          through: { attributes: [] },
+        },
+      ],
     });
 
-    if (!heroes.length) {
-      return next(createError(404, 'Users not found'));
+    if (!heroes) {
+      return next(createError(404, 'Superheroes not found'));
     }
 
     res.status(200).send({
@@ -90,22 +98,58 @@ module.exports.getAllHeroes = async (req, res, next) => {
   }
 };
 
+module.exports.updateHero = async (req, res, next) => {
+  try {
+    const {
+      body: { nickname, realName, originDescription, catchPhrase },
+      hero,
+      images,
+      superpowers,
+    } = req;
+
+    if (images) {
+      await hero.addImages(images);
+    }
+
+    if (superpowers) {
+      await hero.addSuperpowers(superpowers);
+    }
+
+    const updatedHero = await hero.update(
+      {
+        nickname,
+        realName,
+        originDescription,
+        catchPhrase,
+      },
+      { returning: true },
+    );
+
+    res.status(200).send({ data: updatedHero });
+  } catch (err) {
+    next(err);
+  }
+};
+
 module.exports.deleteHero = async (req, res, next) => {
   try {
     const {
       params: { id },
     } = req;
+
     const rows = await Superhero.destroy({
       where: {
         id: id,
       },
     });
+
     if (rows !== 1) {
       return next(
         createError(400, 'Bad request. Hero was not deleted, maybe not found'),
       );
     }
-    res.status(200).send({ data: 'Hero was deleted' });
+
+    res.status(200).send({ data: 'Hero was deleted. Rest in peace' });
   } catch (err) {
     next(err);
   }
