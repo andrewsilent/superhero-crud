@@ -1,0 +1,6 @@
+PATCH http://localhost:3001/api/superpowers/1 HTTP/1.1
+Content-Type: application/json
+
+{
+  "superpower": "healing factor and solar energy absorption"
+}

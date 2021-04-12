@@ -1,0 +1,10 @@
+PATCH http://localhost:3001/api/superheroes/1 HTTP/1.1
+Content-Type: application/json
+
+{
+  "nickname": "SuperMAAAANas",
+  "realName": "Clark bada",
+  "originDescription": "updated description2",
+  "catchPhrase": "updated phrase2",
+  "superpowers": ["solar energy absorption and healing factor","solar flare and heat vision","new superpower","new superpower2"]
+}
